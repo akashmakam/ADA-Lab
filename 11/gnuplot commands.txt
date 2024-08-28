@@ -1,0 +1,8 @@
+For Heap Sort Algorithm
+set title "Heap Sort Algorithm - Performance Evaluation"
+set xlabel "Input Size"
+set ylabel "Operation Count"
+set xrange [*:*]
+set yrange [*:*]
+set style data linespoints
+plot 'heapBest.txt' title "Best Case", 'heapWorst.txt' title "Worst Case", 'heapAverage.txt' title "Average Case"

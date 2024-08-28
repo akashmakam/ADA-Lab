@@ -1,0 +1,8 @@
+For Merge Sort
+set title "Merge Sort Algorithm - Performance Evaluation"
+set xlabel "Input Size"
+set ylabel "Operation Count"
+set xrange [*:*]
+set yrange [*:*]
+set style data linespoints
+plot 'mergeBest.txt' title "Best Case", 'mergeWorst.txt' title "Worst Case"

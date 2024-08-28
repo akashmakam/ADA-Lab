@@ -1,0 +1,8 @@
+For String Matching Algorithm
+set title "String Matching Algorithm - Performance Evaluation"
+set xlabel "Input Size"
+set ylabel "Operation Count"
+set xrange [*:*]
+set yrange [*:*]
+set style data linespoints
+plot 'stringBest.txt' title "Best Case", 'stringWorst.txt' title "Worst Case", 'stringAverage.txt' title "Average Case"

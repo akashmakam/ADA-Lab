@@ -1,0 +1,26 @@
+For Euclid's algorithm
+set title "Euclid's Algorithm - Performance Evaluation"
+set xlabel "Input Size"
+set ylabel "Operation Count"
+set xrange [*:*]
+set yrange [*:*]
+set style data linespoints
+plot 'e_b.txt' title "Best Case", 'e_w.txt' title "Worst Case"
+
+For Consecutive Integer Checking Algorithm
+set title "Consecutive Integer Checking Algorithm - Performance Evaluation"
+set xlabel "Input Size"
+set ylabel "Operation Count"
+set xrange [*:*]
+set yrange [*:*]
+set style data linespoints
+plot 'c_b.txt' title "Best Case", 'c_w.txt' title "Worst Case"
+
+For Modified Euclid's Algorithm
+set title "Modified Euclid's Algorithm - Performance Evaluation"
+set xlabel "Input Size"
+set ylabel "Operation Count"
+set xrange [*:*]
+set yrange [*:*]
+set style data linespoints
+plot 'm_b.txt' title "Best Case", 'm_w.txt' title "Worst Case"
