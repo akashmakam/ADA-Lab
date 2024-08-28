@@ -1,0 +1,8 @@
+For Depth First Search Algorithm
+set title "Depth First Search Algorithm - Performance Evaluation"
+set xlabel "Input Size"
+set ylabel "Operation Count"
+set xrange [*:*]
+set yrange [*:*]
+set style data linespoints
+plot 'dfsBest.txt' title "Best Case", 'dfsWorst.txt' title "Worst Case"
