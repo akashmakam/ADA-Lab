@@ -32,47 +32,43 @@ void freeGraph(graph *g) {
     free(g);
 }
 
-static int count = 0, isCyclic = 0;
+static int count = 0, orderCount = 0, isCyclic = 0;
 
 void depthFirstSearch(graph *g, int start, int mode) {
     g -> visited[start] = 1;
     if (mode == 0) {
-        printf(" -> %c", start + 65);
+        printf("-> %c ", start + 65);
     }
+    count++;
     for (int i = 0; i < g -> n; i++) {
         if (g -> matrix[start][i] == 1) {
-            count++;
-            if (g -> visited[i] == 0) {
+            orderCount++;
+            if (!(g -> visited[i])) {
                 g -> parent[i] = start;
                 depthFirstSearch(g, i, mode);
-            } else if (g -> parent[start] != i) {
+            } else if ((g -> parent[start] != i) && (g -> visited[i])) {
                 isCyclic = 1;
             }
         }
     }
-    count++;
+    orderCount++;
 }
 
 void findConnectedComponents(graph *g) {
-    printf("\nConnected components of the graph:\n");
-    int componentCount = 0;
+    printf("Connected components of the graph:\n");
+    int componentorderCount = 0;
     for (int i = 0; i < g -> n; i++) {
         if (g -> visited[i] == 0) {
-            componentCount++;
-            printf("Component %d:", componentCount);
+            componentorderCount++;
+            printf("Component %d:", componentorderCount);
             depthFirstSearch(g, i, 0);
             printf("\n");
         }
     }
-    if (componentCount == 1) {
-        printf("\nThe input graph is connected.\n");
-    } else {
-        printf("\nThe input graph is not connected.\n");
-    }
 }
 
 void tester() {
-    int n;
+    int n, start;
     printf("\nEnter the number of vertices of the graph: ");
     scanf("%d", &n);
     graph *g = createGraph(n);
@@ -82,7 +78,17 @@ void tester() {
             scanf("%d", &(g -> matrix[i][j]));
         }
     }
-    findConnectedComponents(g);
+    printf("\nEnter the vertex to start the depth first search from: ");
+    scanf("%d", &start);
+    printf("\nDFS traversal from vertex %c:\n", start + 65);
+    depthFirstSearch(g, start, 0);
+    if (count == n) {
+        printf("\n\nThe input graph is connected.\n");
+    } else {
+        printf("\n\nThe input graph is not connected.\n");
+        findConnectedComponents(g);
+        printf("\n");
+    }
     if (isCyclic)
         printf("The input graph is cyclic.\n");
     else
@@ -91,8 +97,8 @@ void tester() {
 }
 
 void plotter(int mode) {
-    FILE *f1 = fopen("dfsBest.txt", "a");
-    FILE *f2 = fopen("dfsWorst.txt", "a");
+    FILE *f1 = fopen("depthFirstSearchBest.txt", "a");
+    FILE *f2 = fopen("depthFirstSearchWorst.txt", "a");
     for (int k = 1; k <= 10; k++) {
         graph *g = createGraph(k);
         for (int i = 0; i < k; i++) {
@@ -106,12 +112,12 @@ void plotter(int mode) {
                 }
             }
         }
-        count = 0;
+        orderCount = 0;
         depthFirstSearch(g, 0, 1);
         if (mode == 0)
-            fprintf(f2, "%d\t%d\n", k, count);
+            fprintf(f2, "%d\t%d\n", k, orderCount);
         else
-            fprintf(f1, "%d\t%d\n", k, count);
+            fprintf(f1, "%d\t%d\n", k, orderCount);
         freeGraph(g);
     }
     fclose(f1);
