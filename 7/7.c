@@ -97,8 +97,8 @@ void tester() {
 }
 
 void plotter(int mode) {
-    FILE *f1 = fopen("depthFirstSearchBest.txt", "a");
-    FILE *f2 = fopen("depthFirstSearchWorst.txt", "a");
+    FILE *f1 = fopen("dfsBest.txt", "a");
+    FILE *f2 = fopen("dfsWorst.txt", "a");
     for (int k = 1; k <= 10; k++) {
         graph *g = createGraph(k);
         for (int i = 0; i < k; i++) {
