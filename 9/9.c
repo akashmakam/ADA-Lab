@@ -1,4 +1,4 @@
-// Depth First Search Algorithm
+// Topological Sorting Algorithm
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -37,43 +37,48 @@ void freeGraph(graph *g) {
 
 static int count = 0, orderCount = 0, isCyclic = 0;
 
-void depthFirstSearch(graph *g, int start, int mode) {
+void depthFirstSearch(graph *g, int start, int *stack, int *stackIndex) {
     g -> visited[start] = 1;
     g -> path[start] = 1;
-    if (mode == 0) {
-        printf("-> %c ", start + 65);
-    }
     count++;
     for (int i = 0; i < g -> n; i++) {
         if (g -> matrix[start][i] == 1) {
             orderCount++;
             if (!(g -> visited[i])) {
                 g -> parent[i] = start;
-                depthFirstSearch(g, i, mode);
-            } else if (g -> path[i]) {
+                depthFirstSearch(g, i, stack, stackIndex);
+            } else if ((g -> path[i])) {
                 isCyclic = 1;
             }
         }
     }
     g -> path[start] = 0;
     orderCount++;
+    stack[++(*stackIndex)] = start;
 }
 
-void findConnectedComponents(graph *g) {
-    printf("Connected components of the graph:\n");
-    int componentCount = 0;
+void topologicalSort(graph *g, int mode) {
+    int *stack = (int *) malloc((g -> n) * sizeof(int));
+    int stackIndex = -1;
     for (int i = 0; i < g -> n; i++) {
         if (!(g -> visited[i])) {
-            componentCount++;
-            printf("Component %d:", componentCount);
-            depthFirstSearch(g, i, 0);
-            printf("\n");
+            depthFirstSearch(g, i, stack, &stackIndex);
         }
     }
+    if (mode == 0 && !isCyclic) {
+        printf("\nThe topological sort order is:\n");
+        for (int i = stackIndex; i >= 0; i--) {
+            printf("-> %c ", stack[i] + 65);
+        }
+        printf("\n");
+    } else if (mode == 0) {
+        printf("\nThe input graph is cyclic, so no topological ordering!\n");
+    }
+    free(stack);
 }
 
 void tester() {
-    int n, start;
+    int n;
     printf("\nEnter the number of vertices of the graph: ");
     scanf("%d", &n);
     graph *g = createGraph(n);
@@ -83,27 +88,13 @@ void tester() {
             scanf("%d", &(g -> matrix[i][j]));
         }
     }
-    printf("\nEnter the vertex to start the depth first search from: ");
-    scanf("%d", &start);
-    printf("\nDFS traversal from vertex %c:\n", start + 65);
-    depthFirstSearch(g, start, 0);
-    if (count == n) {
-        printf("\n\nThe input graph is connected.\n");
-    } else {
-        printf("\n\nThe input graph is not connected.\n");
-        findConnectedComponents(g);
-        printf("\n");
-    }
-    if (isCyclic)
-        printf("The input graph is cyclic.\n");
-    else
-        printf("The input graph is not cyclic.\n");
+    topologicalSort(g, 0);
     freeGraph(g);
 }
 
 void plotter(int mode) {
-    FILE *f1 = fopen("dfsBest.txt", "a");
-    FILE *f2 = fopen("dfsWorst.txt", "a");
+    FILE *f1 = fopen("topoBest.txt", "a");
+    FILE *f2 = fopen("topoWorst.txt", "a");
     for (int k = 1; k <= 10; k++) {
         graph *g = createGraph(k);
         for (int i = 0; i < k; i++) {
@@ -117,8 +108,8 @@ void plotter(int mode) {
                 }
             }
         }
-        orderCount = 0;
-        depthFirstSearch(g, 0, 1);
+        orderCount = count = 0;
+        topologicalSort(g, 1);
         if (mode == 0)
             fprintf(f2, "%d\t%d\n", k, orderCount);
         else

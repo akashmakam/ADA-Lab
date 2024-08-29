@@ -1,0 +1,8 @@
+For Topological Sorting Algorithm
+set title "Topological Sorting Algorithm - Performance Evaluation"
+set xlabel "Input Size"
+set ylabel "Operation Count"
+set xrange [*:*]
+set yrange [*:*]
+set style data linespoints
+plot 'topoBest.txt' title "Best Case", 'topoWorst.txt' title "Worst Case"
